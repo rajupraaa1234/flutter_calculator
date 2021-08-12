@@ -2,28 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'dart:developer';
 
-void main(){
-  runApp(Calculator());
-}
+// void main(){
+//   runApp(Calculator());
+// }
 
 class Calculator extends StatelessWidget {
+
+  String value;
+  Calculator({required this.value});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Calculator',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: SimpleCalculator(),
+      home: SimpleCalculator(value: value),
     );
   }
 }
 
 class SimpleCalculator extends StatefulWidget {
+  String value;
+  SimpleCalculator({required this.value});
   @override
-  _SimpleCalculatorState createState() => _SimpleCalculatorState();
+  _SimpleCalculatorState createState() => _SimpleCalculatorState(value: value);
 }
 
 class _SimpleCalculatorState extends State<SimpleCalculator> {
+  String value;
+  _SimpleCalculatorState({required this.value});
 
   String equation = "0";
   String result = "0";
@@ -113,7 +121,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Simple Calculator')),
+      appBar: AppBar(title: Text('Hello $value')),
       body: Column(
         children: <Widget>[
 

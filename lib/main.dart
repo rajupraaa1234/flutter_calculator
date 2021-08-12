@@ -1,113 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:developer';
+import 'CalculatorScreen.dart';
 
-void main(){
-  runApp(LoginScreen());
+
+void main() {
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
 }
 
-
-class LoginScreen extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Login'),
-    );
-  }
+  _State createState() => _State();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+class _State extends State<MyApp> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final emailField = TextField(
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
-          border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-
-    final passwordField = TextField(
-      obscureText: true,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-          border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-
-    final loginButon = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
-        child: Text("Login",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 155.0,
-                      child: Image.asset(
-                        'asset/images/calc.webp',
-                        fit: BoxFit.contain,
-                      ),
+        appBar: AppBar(
+          title: Text('Calculator App'),
+        ),
+        body: Padding(
+            padding: EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Calculator',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 30),
+                    )),
+                Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontSize: 20),
+                    )),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'User Name',
                     ),
-                    SizedBox(height: 45.0),
-                    emailField,
-                    SizedBox(height: 25.0),
-                    passwordField,
-                    SizedBox(
-                      height: 35.0,
-                    ),
-                    loginButon,
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        )
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email Id',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: TextField(
+                    obscureText: true,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: (){
+                    //forgot password screen
+                  },
+                  textColor: Colors.blue,
+                  child: Text('Forgot Password'),
+                ),
+                Container(
+                    height: 50,
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: RaisedButton(
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      child: Text('Login'),
+                      onPressed: () {
+                        onClickLogin(nameController.text,emailController.text,passwordController.text);
+                      },
+                    )),
+                Container(
+                    child: Row(
+                      children: <Widget>[
+                        Text('Does not have account?'),
+                        FlatButton(
+                          textColor: Colors.blue,
+                          child: Text(
+                            'Sign in',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () {
+                            //signup screen
+                          },
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ))
+              ],
+            )));
+  }
+
+  void onClickLogin(String name, String mail, String pass) {
+      if(name.isEmpty){
+        PrintToast("Please enter your name");
+        return;
+      }else if(mail.isEmpty){
+        PrintToast("Please enter your email id");
+        return;
+      }else if(pass.isEmpty){
+        PrintToast("Please enter your Password");
+        return;
+      }else{
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>Calculator(value : name),
+        ));
+      }
+  }
+
+
+  void PrintToast(String str){
+    Fluttertoast.showToast(
+        msg: str,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
     );
   }
 }
+
 
