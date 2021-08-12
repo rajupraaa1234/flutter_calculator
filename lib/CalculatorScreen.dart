@@ -134,7 +134,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
 
 
           Container(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.bottomRight,
             padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
             child: Text(result, style: TextStyle(fontSize: resultFontSize),),
           ),
